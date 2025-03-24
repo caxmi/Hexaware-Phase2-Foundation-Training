@@ -1,0 +1,86 @@
+CREATE DATABASE StudentRecords;
+USE master;
+--
+ALTER DATABASE StudentRecords MODIFY NAME = UniversityRecords;
+--
+ALTER DATABASE UniversityRecords SET SINGLE_USER WITH ROLLBACK IMMEDIATE;
+DROP DATABASE UniversityRecords;
+--
+CREATE DATABASE StudentRecords;
+USE StudentRecords;
+CREATE TABLE Students (
+    StudentID INT PRIMARY KEY,
+    Name VARCHAR(100),
+    Age INT,
+    Gender CHAR(1),
+    Department VARCHAR(50)
+);
+--
+ALTER TABLE Students
+ADD Email VARCHAR(100);
+--
+EXEC sp_rename 'Students', 'UniversityStudents';
+--
+DROP TABLE UniversityStudents;
+--
+CREATE TABLE Students (
+    StudentID INT PRIMARY KEY,
+    Name VARCHAR(100),
+    Age INT,
+    Gender CHAR(1),
+    Department VARCHAR(50),
+    Email VARCHAR(100)
+);
+--
+INSERT INTO Students (StudentID, Name, Age, Gender, Department, Email) VALUES
+(1, 'Agarwal', 20, 'F', 'Computer Science', 'agarwal@gmail.com'),
+(2, 'Babu', 22, 'M', 'Mechanical Engineering', 'babu@gmail.com'),
+(3, 'Saathvika', 19, 'F', 'Electrical Engineering', 'saathvika@gmail.com'),
+(4, 'Durai', 21, 'M', 'Computer Science', 'durai@egmail.com'),
+(5, 'Vimal', 18, 'F', 'Biotechnology', 'vimal@gmail.com');
+--
+UPDATE Students
+SET Email = 'agarwal.jamie@university.edu'
+WHERE StudentID = 1;
+--
+DELETE FROM Students
+WHERE StudentID = 2;
+--
+SELECT Name, Email FROM Students;
+--
+SELECT * FROM Students
+WHERE Age > 18;
+--
+SELECT * FROM Students;
+--
+SELECT * FROM Students
+WHERE Department = 'Computer Science';
+--
+SELECT * FROM Students WHERE Age = 20;
+
+-- Not Equal 
+SELECT * FROM Students WHERE Department <> 'Biotechnology';
+
+-- Greater Than
+SELECT * FROM Students WHERE Age > 18;
+
+-- Less Than
+SELECT * FROM Students WHERE Age < 21;
+
+-- BETWEEN
+SELECT * FROM Students WHERE Age BETWEEN 18 AND 21;
+
+-- IN
+SELECT * FROM Students WHERE Department IN ('Computer Science', 'Electrical Engineering');
+
+-- LIKE
+SELECT * FROM Students WHERE Name LIKE 'A%';
+
+-- IS NULL
+SELECT * FROM Students WHERE Email IS NULL;
+
+-- AND
+SELECT * FROM Students WHERE Age > 18 AND Department = 'Computer Science';
+
+-- OR
+SELECT * FROM Students WHERE Department = 'Biotechnology' OR Department = 'Mechanical Engineering';
