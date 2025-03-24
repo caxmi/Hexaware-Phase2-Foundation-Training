@@ -1,0 +1,44 @@
+CREATE DATABASE EmployeeRecords;
+--
+USE master;
+ALTER DATABASE EmployeeRecords MODIFY NAME = HR_Database;
+--
+ALTER DATABASE HR_Database SET SINGLE_USER WITH ROLLBACK IMMEDIATE;
+DROP DATABASE HR_Database;
+--
+CREATE TABLE Customers (
+    CustomerID INT PRIMARY KEY,
+    FullName VARCHAR(100),
+    Email VARCHAR(100),
+    Phone VARCHAR(15),
+    DateJoined DATE
+);
+--
+ALTER TABLE Customers
+ADD Address VARCHAR(200);
+--
+EXEC sp_rename 'Customers', 'ClientDetails';
+--
+DROP TABLE ClientDetails;
+--
+CREATE TABLE Customers (
+    CustomerID INT PRIMARY KEY,
+    FullName VARCHAR(100),
+    Email VARCHAR(100),
+    Phone VARCHAR(15),
+    DateJoined DATE,
+    Address VARCHAR(200)
+);
+--
+INSERT INTO Customers (CustomerID, FullName, Email, Phone, DateJoined, Address)
+VALUES 
+(1, 'Thomas Mathew', 'thomas.mathew@gmail.com', '1234567890', '2019-03-15', 'Kochi'),
+(2, 'Srivalli', 'joseph.varghese@yahoo.com', '9876543210', '2020-07-20', 'Tirunelveli'),
+(3, 'George Kurien', 'george.kurian@outlook.com', NULL, '2021-01-10', 'Kottayam'),
+(4, 'Madhan', 'madhan@gmail.com', '5551234567', '2022-09-05', 'Chennai'),
+(5, 'David Chacko', 'david.chacko@yahoo.com', '4449876543', '2018-11-30', 'Alappuzha');
+
+-- Updating Email for CustomerID 3
+UPDATE Customers
+SET Email = 'george.kurian@university.edu'
+WHERE CustomerID = 3;
