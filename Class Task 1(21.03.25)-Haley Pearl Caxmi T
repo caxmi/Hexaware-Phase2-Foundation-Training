@@ -33,29 +33,36 @@ CREATE TABLE Students (
 );
 --
 INSERT INTO Students (StudentID, Name, Age, Gender, Department, Email) VALUES
-(1, 'Agarwal', 20, 'F', 'Computer Science', 'agarwal@gmail.com'),
-(2, 'Babu', 22, 'M', 'Mechanical Engineering', 'babu@gmail.com'),
-(3, 'Saathvika', 19, 'F', 'Electrical Engineering', 'saathvika@gmail.com'),
-(4, 'Durai', 21, 'M', 'Computer Science', 'durai@egmail.com'),
-(5, 'Vimal', 18, 'F', 'Biotechnology', 'vimal@gmail.com');
---
+(1, 'Arun Raj', 20, 'M', 'Computer Science', 'arunraj@gmail.com'),
+(2, 'Bala Kumaran', 22, 'M', 'Mechanical Engineering', 'balakumaran@gmail.com'),
+(3, 'Swathi Priya', 19, 'F', 'Electrical Engineering', 'swathipriya@gmail.com'),
+(4, 'Karthik Raja', 21, 'M', 'Computer Science', 'karthik.raja@gmail.com'),
+(5, 'Meena Lakshmi', 18, 'F', 'Biotechnology', 'meenalakshmi@gmail.com');
+
+-- Updating Email for StudentID 1
 UPDATE Students
-SET Email = 'agarwal.jamie@university.edu'
+SET Email = 'arunraj.university.edu'
 WHERE StudentID = 1;
---
+
+-- Deleting StudentID 2
 DELETE FROM Students
 WHERE StudentID = 2;
---
+
+-- Selecting Name and Email
 SELECT Name, Email FROM Students;
---
+
+-- Selecting students older than 18
 SELECT * FROM Students
 WHERE Age > 18;
---
+
+-- Selecting all students
 SELECT * FROM Students;
---
+
+-- Selecting students from Computer Science department
 SELECT * FROM Students
 WHERE Department = 'Computer Science';
---
+
+-- Selecting students with Age = 20
 SELECT * FROM Students WHERE Age = 20;
 
 -- Not Equal 
@@ -73,14 +80,15 @@ SELECT * FROM Students WHERE Age BETWEEN 18 AND 21;
 -- IN
 SELECT * FROM Students WHERE Department IN ('Computer Science', 'Electrical Engineering');
 
--- LIKE
+-- LIKE (Names starting with 'A')
 SELECT * FROM Students WHERE Name LIKE 'A%';
 
 -- IS NULL
 SELECT * FROM Students WHERE Email IS NULL;
 
--- AND
+-- AND Condition
 SELECT * FROM Students WHERE Age > 18 AND Department = 'Computer Science';
 
--- OR
+-- OR Condition
 SELECT * FROM Students WHERE Department = 'Biotechnology' OR Department = 'Mechanical Engineering';
+
