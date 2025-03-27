@@ -126,7 +126,7 @@ GROUP BY s.Name;
 ALTER TABLE Pets
 ADD OwnerID INT NULL;
 SELECT *FROM Pets
-WHERE OwnerID IS NULL;
+WHERE OwnerIDÂ ISÂ NULL;
 -- 8. Monthly Donation Summary
 SELECT YEAR(DonationDate) AS Year, MONTH(DonationDate) AS Month, SUM(DonationAmount) AS TotalDonations
 FROM Donations
