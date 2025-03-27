@@ -1,0 +1,75 @@
+-- Section A: Storing and Manipulating Data (15 Marks)
+
+-- 1. Storing Data in a Table (3 Marks)
+-- a) Create Employees Table
+CREATE TABLE Employees (
+    EmployeeID INT IDENTITY(1,1) PRIMARY KEY,
+    Name VARCHAR(100) NOT NULL,
+    Age INT,
+    Department VARCHAR(50),
+    Salary DECIMAL(10,2)
+);
+
+-- b) Insert three records
+INSERT INTO Employees (Name, Age, Department, Salary) VALUES
+('Rajesh', 30, 'HR', 50000),
+('Priya', 40, 'IT', 60000),
+('Anil', 35, 'Finance', 55000);
+
+-- 2. Updating Salary of HR employees by 10% (3 Marks)
+UPDATE Employees SET Salary = Salary * 1.10 WHERE Department = 'HR';
+
+-- 3. Deleting Employees from IT Department (3 Marks)
+DELETE FROM Employees WHERE Department = 'IT';
+
+-- 4. Manipulating Data in Tables (6 Marks)
+-- a) Insert a new employee with a minimum salary of 30000
+INSERT INTO Employees (Name, Age, Department, Salary) 
+VALUES ('Suresh', 28, 'Marketing', 32000);
+
+-- b) Update Department of employees earning more than 50000 to 'Senior Staff'
+UPDATE Employees SET Department = 'Senior Staff' WHERE Salary > 50000;
+
+-- c) Delete employees older than 60 years
+DELETE FROM Employees WHERE Age > 60;
+
+-- Section B: Retrieving and Filtering Data (35 Marks)
+
+-- 5. Retrieve Name and Salary of all employees (3 Marks)
+SELECT Name, Salary FROM Employees;
+
+-- 6. Retrieve employees from HR department earning more than 50000 (3 Marks)
+SELECT * FROM Employees WHERE Department = 'HR' AND Salary > 50000;
+
+-- 7. Retrieve all employees sorted by Salary in descending order (4 Marks)
+SELECT * FROM Employees ORDER BY Salary DESC;
+
+-- 8. Filtering Data - WHERE Clauses (5 Marks)
+-- a) Retrieve employees whose Age is greater than 30
+SELECT * FROM Employees WHERE Age > 30;
+
+-- b) Retrieve employees whose Department is either HR or Finance
+SELECT * FROM Employees WHERE Department IN ('HR', 'Finance');
+
+-- 9. Filtering Data - Operators (10 Marks)
+-- a) Retrieve employees with Salary between 30000 and 60000
+SELECT * FROM Employees WHERE Salary BETWEEN 30000 AND 60000;
+
+-- b) Retrieve employees whose Name starts with 'A'
+SELECT * FROM Employees WHERE Name LIKE 'A%';
+
+-- c) Retrieve employees who do NOT belong to IT department
+SELECT * FROM Employees WHERE Department <> 'IT';
+
+-- d) Retrieve employees whose Department is either Sales or Marketing using IN operator
+SELECT * FROM Employees WHERE Department IN ('Sales', 'Marketing');
+
+-- e) Retrieve employees with distinct Department names
+SELECT DISTINCT Department FROM Employees;
+
+-- 10. Column & Table Aliases (3 Marks)
+SELECT EmployeeID AS ID, Name, Salary AS "Monthly Income" FROM Employees;
+
+-- 11. Filtering Data (4 Marks)
+-- Retrieve employees whose Name contains 'John' and whose Salary is greater than 40000
+SELECT * FROM Employees WHERE Name LIKE '%Raj%' AND Salary > 40000;
