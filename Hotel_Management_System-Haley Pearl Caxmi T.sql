@@ -184,7 +184,7 @@ EXEC GetEventParticipantsByCity @CityName = 'Chozha Grand Hall';
 -- 13. Retrieve unique room types in a specific hotel
 SELECT DISTINCT RoomType
 FROM Rooms
-WHERE HotelID = 1 AND Available = 1;
+WHERE HotelID = 1 AND AvailableÂ =Â 1;
 
 -- 14. Find guests who have never made a booking
 SELECT * FROM Guests WHERE GuestID NOT IN (SELECT GuestID FROM Bookings);
