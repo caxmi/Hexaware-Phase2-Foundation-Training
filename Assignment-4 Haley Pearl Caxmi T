@@ -1,0 +1,155 @@
+-- Question 1: Dynamic Column Aliasing
+DROP TABLE SalesData
+CREATE TABLE SalesData (
+    SalesID INT PRIMARY KEY,
+    ProductName VARCHAR(100),
+    SalesAmount DECIMAL(10,2),
+    SalesDate DATE
+);
+
+INSERT INTO SalesData (SalesID, ProductName, SalesAmount, SalesDate)
+VALUES
+(1, 'Idli', 1200.50, '2025-03-10'),
+(2, 'Dosa', 800.75, '2025-03-15'),
+(3, 'Sambar', 450.30, '2025-03-20');
+
+DECLARE @sql NVARCHAR(MAX);
+DECLARE @monthName NVARCHAR(20);
+
+SET @monthName = DATENAME(MONTH, GETDATE());
+
+SET @sql = 
+    'SELECT SalesID, ProductName, SalesAmount AS Sales_' + @monthName + ', SalesDate FROM SalesData;';
+
+EXEC sp_executesql @sql;
+
+
+-- Question 2: Pivoting Data for Custom Report
+
+CREATE TABLE EmployeeSalary (
+    EmployeeID INT ,
+    EmployeeName VARCHAR(100),
+    SalaryMonth VARCHAR(10),
+    SalaryAmount DECIMAL(10,2)
+);
+
+INSERT INTO EmployeeSalary (EmployeeID, EmployeeName, SalaryMonth, SalaryAmount)
+VALUES
+(1, 'Arun', 'January', 5000.00),
+(1, 'Arun', 'February', 5200.00),
+(1, 'Arun', 'March', 5300.00),
+(2, 'Murugan', 'January', 4800.00),
+(2, 'Murugan', 'February', 4900.00),
+(2, 'Murugan', 'March', 4950.00);
+
+SELECT * 
+FROM (
+    SELECT EmployeeID, EmployeeName, SalaryMonth, SalaryAmount
+    FROM EmployeeSalary
+) AS SourceTable
+PIVOT (
+    MAX(SalaryAmount) 
+    FOR SalaryMonth IN ([January], [February], [March], [April], [May], [June], 
+                        [July], [August], [September], [October], [November], [December])
+) AS PivotTable;
+
+
+-- Question 3: Ranking and Filtering Data
+DROP TABLE IF EXISTS CustomerTransactions;
+CREATE TABLE CustomerTransactions (
+    TransactionID INT PRIMARY KEY,
+    CustomerID INT, 
+    TransactionAmount DECIMAL(10,2),
+    TransactionDate DATE
+);
+
+INSERT INTO CustomerTransactions (TransactionID, CustomerID, TransactionAmount, TransactionDate)
+VALUES
+(1, 101, 500.00, '2025-03-01'),
+(2, 101, 700.00, '2025-03-05'),
+(3, 101, 600.00, '2025-03-03'),
+(4, 101, 700.00, '2025-03-06'),
+(5, 101, 800.00, '2025-03-07'),
+(6, 102, 400.00, '2025-03-02'),
+(7, 102, 900.00, '2025-03-10'),
+(8, 102, 450.00, '2025-03-08'),
+(9, 102, 500.00, '2025-03-12'),
+(10, 102, 550.00, '2025-03-15');
+
+WITH RankedTransactions AS (
+    SELECT 
+        TransactionID,
+        CustomerID,
+        TransactionAmount,
+        TransactionDate,
+        ROW_NUMBER() OVER (
+            PARTITION BY CustomerID 
+            ORDER BY TransactionAmount DESC, TransactionDate DESC
+        ) AS Rank
+    FROM CustomerTransactions
+)
+SELECT TransactionID, CustomerID, TransactionAmount, TransactionDate
+FROM RankedTransactions
+WHERE Rank <= 3
+ORDER BY CustomerID, Rank;
+
+
+-- Question 4: Conditional Aggregation
+DROP TABLE IF EXISTS Orders;
+CREATE TABLE Orders (
+    OrderID INT PRIMARY KEY,
+    CustomerID INT, 
+    OrderAmount DECIMAL(10,2),
+    OrderDate DATE
+);
+
+INSERT INTO Orders (OrderID, CustomerID, OrderAmount, OrderDate)
+VALUES
+(1, 101, 500.00, '2024-03-10'),
+(2, 101, 700.00, '2023-05-15'),
+(3, 101, 600.00, '2024-07-20'),
+(4, 102, 900.00, '2024-02-10'),
+(5, 102, 800.00, '2023-08-25'),
+(6, 103, 1000.00, '2023-06-14'),
+(7, 103, 1200.00, '2024-01-05');
+
+SELECT 
+    CustomerID,
+    SUM(OrderAmount) AS TotalOrderAmount,
+    SUM(CASE WHEN YEAR(OrderDate) = YEAR(GETDATE()) THEN OrderAmount ELSE 0 END) AS TotalOrdersThisYear,
+    SUM(CASE WHEN YEAR(OrderDate) = YEAR(GETDATE()) - 1 THEN OrderAmount ELSE 0 END) AS TotalOrdersLastYear
+FROM Orders
+GROUP BY CustomerID
+ORDER BY CustomerID;
+
+
+-- Question 5: Generating a Custom Ranking Report
+CREATE TABLE StudentScores (
+    StudentID INT PRIMARY KEY,
+    StudentName VARCHAR(100),
+    Subject VARCHAR(50),
+    Score INT
+);
+
+INSERT INTO StudentScores (StudentID, StudentName, Subject, Score)
+VALUES
+(1, 'Vikram', 'Math', 95),
+(2, 'Karthik', 'Math', 90),
+(3, 'Ramesh', 'Math', 95),
+(4, 'Suresh', 'Math', 85),
+(5, 'Vikram', 'Science', 88),
+(6, 'Karthik', 'Science', 92),
+(7, 'Ramesh', 'Science', 88),
+(8, 'Suresh', 'Science', 80);
+
+SELECT 
+    Subject,
+    StudentID,
+    StudentName,
+    Score,
+    DENSE_RANK() OVER (
+        PARTITION BY Subject 
+        ORDER BY Score DESC
+    ) AS Rank
+FROM StudentScores
+ORDER BY Subject, Rank;
