@@ -1,0 +1,64 @@
+-- 1) List all system databases
+SELECT name FROM sys.databases WHERE database_id <= 4;
+
+-- 2) Identify physical database files of "SalesDB"
+SELECT name, physical_name FROM sys.master_files WHERE database_id = DB_ID('SalesDB');
+
+-- 3) Create "InventoryDB" with primary data file (5MB) and log file (2MB)
+CREATE DATABASE InventoryDB
+ON PRIMARY 
+(NAME = 'InventoryDB_Data', FILENAME = 'C:\Program Files\Microsoft SQL Server\MSSQL16.MSSQLSERVER\MSSQL\DATA\InventoryDB.mdf', SIZE = 5MB)
+LOG ON 
+(NAME = 'InventoryDB_Log', FILENAME = 'C:\Program Files\Microsoft SQL Server\MSSQL16.MSSQLSERVER\MSSQL\DATA\InventoryDB.ldf', SIZE = 2MB);
+
+-- 4) Rename "InventoryDB" to "StockDB"
+ALTER DATABASE InventoryDB MODIFY NAME = StockDB;
+
+-- 5) Drop "StockDB"
+DROP DATABASE StockDB;
+
+-- 6) Display all available data types
+SELECT name AS DataType FROM sys.types;
+
+-- 7) Create "Products" table
+CREATE TABLE Products (
+    ProductID INT PRIMARY KEY,
+    ProductName VARCHAR(50) NOT NULL,
+    Price DECIMAL(10,2),
+    StockQuantity INT DEFAULT 0
+);
+
+
+-- 8) Add "Category" column to "Products"
+ALTER TABLE Products ADD Category VARCHAR(30);
+
+-- 9) Rename "Products" to "Inventory"
+EXEC sp_rename 'Products', 'Inventory';
+
+-- 10) Drop "Inventory" table
+DROP TABLE Inventory;
+
+-- 11) List and describe system databases
+SELECT name, database_id FROM sys.databases WHERE database_id <= 4;
+-- Descriptions:
+-- 1. master: Stores system-level information.
+-- 2. model: Used as a template for new databases.
+-- 3. msdb: Used by SQL Server Agent for scheduling jobs.
+-- 4. tempdb: Stores temporary tables and procedures.
+
+-- 12) Display all database files for a specific database
+SELECT name, type_desc, physical_name FROM sys.master_files WHERE database_id = DB_ID('YourDatabaseName');
+
+-- 13) Create "SalesDB" with primary data file (10MB) and log file (5MB)
+CREATE DATABASE SalesDB
+ON PRIMARY 
+(NAME = 'SalesDB_Data', FILENAME = 'C:\Program Files\Microsoft SQL Server\MSSQL16.MSSQLSERVER\MSSQL\DATA\SalesDB.mdf', SIZE = 10MB)
+LOG ON 
+(NAME = 'SalesDB_Log', FILENAME = 'C:\Program Files\Microsoft SQL Server\MSSQL16.MSSQLSERVER\MSSQL\DATA\SalesDB.ldf', SIZE = 5MB);
+
+-- 14) Rename "SalesDB" to "RetailDB"
+ALTER DATABASE SalesDB MODIFY NAME = RetailDB;
+
+-- 15) Drop "RetailDB" safely ensuring no active connections
+ALTER DATABASE RetailDB SET SINGLE_USER WITH ROLLBACK IMMEDIATE;
+DROP DATABASE RetailDB;
