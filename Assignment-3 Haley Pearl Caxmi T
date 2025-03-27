@@ -1,0 +1,46 @@
+
+-- 1) List all system databases
+SELECT name FROM sys.databases WHERE database_id <= 4;
+
+-- 2) Retrieve the physical file locations (MDF & LDF) of "CompanyDB"
+SELECT name, physical_name FROM sys.master_files WHERE database_id = DB_ID('CompanyDB');
+
+-- 3) Create "HRDB" with Primary Data File (10MB, Autogrow 2MB) and Log File (5MB, Autogrow 1MB)
+CREATE DATABASE HRDB
+ON  
+( NAME = 'HRDB_Data',  
+  FILENAME = 'C:\Program Files\Microsoft SQL Server\MSSQL16.MSSQLSERVER\MSSQL\DATA\HRDB.mdf',  
+  SIZE = 10MB,  
+  MAXSIZE = UNLIMITED,  
+  FILEGROWTH = 2MB )  
+LOG ON  
+( NAME = 'HRDB_Log',  
+  FILENAME = 'C:\Program Files\Microsoft SQL Server\MSSQL16.MSSQLSERVER\MSSQL\DATA\HRDB.ldf',  
+  SIZE = 5MB,  
+  MAXSIZE = UNLIMITED,  
+  FILEGROWTH = 1MB );  
+
+-- 4) Rename "HRDB" to "EmployeeDB"
+ALTER DATABASE HRDB MODIFY NAME = EmployeeDB;
+
+-- 5) Drop "EmployeeDB" from the system
+DROP DATABASE EmployeeDB;
+
+-- 6) Display all supported data types in MS SQL Server
+SELECT name AS DataType FROM sys.types;
+-- 7) Create "Employees" table
+CREATE TABLE Employees (
+    EmpID INT PRIMARY KEY,
+    EmpName VARCHAR(100) NOT NULL,
+    JoinDate DATE NOT NULL,
+    Salary DECIMAL(10,2) DEFAULT 30000.00
+);
+
+-- 8) Add "Department" column to "Employees"
+ALTER TABLE Employees ADD Department VARCHAR(50);
+
+-- 9) Rename "Employees" table to "Staff"
+EXEC sp_rename 'Employees', 'Staff';
+
+-- 10) Drop "Staff" table from the database
+DROP TABLE Staff;
