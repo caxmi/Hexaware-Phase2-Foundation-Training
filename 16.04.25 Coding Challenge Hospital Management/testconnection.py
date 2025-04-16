@@ -1,7 +1,7 @@
 from util.db_conn_util import DBConnUtil
 
 def main():
-    # Test the database connection
+    
     conn = DBConnUtil.getConnection()
 
     if conn:
