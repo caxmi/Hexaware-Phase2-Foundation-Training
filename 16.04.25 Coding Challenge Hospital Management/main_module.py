@@ -46,7 +46,7 @@ def main():
                     print("No appointments found for the given Doctor ID.")
             
             elif choice == '4':
-                # Sample logic to create an appointment and schedule it
+                
                 aid = input("Enter Appointment ID: ")
                 pid = input("Enter Patient ID: ")
                 did = input("Enter Doctor ID: ")
@@ -61,7 +61,7 @@ def main():
                     print("Failed to schedule appointment.")
             
             elif choice == '5':
-                # Sample logic to update an appointment
+                
                 aid = input("Enter Appointment ID to update: ")
                 appt = service.getAppointmentById(aid)
                 if appt:
@@ -85,7 +85,7 @@ def main():
                     print("No appointment found with the given ID.")
             
             elif choice == '6':
-                # Sample logic to cancel an appointment
+                
                 aid = input("Enter Appointment ID to cancel: ")
                 success = service.cancelAppointment(aid)
                 if success:
