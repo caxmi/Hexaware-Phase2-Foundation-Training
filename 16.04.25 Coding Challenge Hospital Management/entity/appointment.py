@@ -6,7 +6,7 @@ class Appointment:
         self.__appointment_date = appointment_date
         self.__description = description
 
-    # Getters and setters
+    
     def get_appointment_id(self):
         return self.__appointment_id
 
