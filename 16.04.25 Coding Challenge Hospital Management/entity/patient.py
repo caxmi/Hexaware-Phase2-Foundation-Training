@@ -9,7 +9,7 @@ class Patient:
         self.__email = None
         self.__address = None
 
-    # Getters & Setters
+    
     def getPatientId(self): return self.__patientId
     def setPatientId(self, id): self.__patientId = id
 
