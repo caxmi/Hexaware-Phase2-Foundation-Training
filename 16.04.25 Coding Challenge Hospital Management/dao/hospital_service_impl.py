@@ -32,15 +32,15 @@ class HospitalServiceImpl(IHospitalService):
         return [Appointment(*row) for row in rows]
 
     def scheduleAppointment(self,appointment):
-        cursor = self.conn.cursor() # type: ignore
+        cursor = self.conn.cursor() 
     
-        # Check if the doctorId exists in the Doctor table
+        
         cursor.execute("SELECT COUNT(1) FROM Doctor WHERE doctorId=?", appointment.doctorId)
         if cursor.fetchone()[0] == 0:
             print(f"Error: Doctor ID {appointment.doctorId} does not exist.")
             return False
     
-        # Proceed with the INSERT if doctorId is valid
+        
         try:
             cursor.execute("""
                 INSERT INTO Appointment (appointmentId, doctorId, patientId, appointmentDate, appointmentTime)
