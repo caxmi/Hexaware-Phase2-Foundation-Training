@@ -6,7 +6,7 @@ class Doctor:
         self.__specialization = specialization
         self.__contact_number = contact_number
 
-    # Getters and setters
+    
     def get_doctor_id(self):
         return self.__doctor_id
 
